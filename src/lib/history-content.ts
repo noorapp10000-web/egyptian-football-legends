@@ -196,6 +196,64 @@ export const HONOURS: Honour[] = [
   },
 ];
 
+export type LeagueCupMatch = {
+  date: string;
+  opponent: string;
+  masryScore: number;
+  opponentScore: number;
+  venue: "home" | "away";
+  note?: string;
+};
+
+export type LeagueCupStage = {
+  stage: string;
+  summary: string;
+  outcome: string;
+  matches: LeagueCupMatch[];
+};
+
+export const LEAGUE_CUP_PATH: LeagueCupStage[] = [
+  {
+    stage: "دور المجموعات",
+    summary: "بداية ثابتة حسمت بطاقة العبور",
+    outcome: "3 فوز · تعادلان · خسارة",
+    matches: [
+      { date: "11 ديسمبر 2025", opponent: "الاتحاد السكندري", masryScore: 0, opponentScore: 0, venue: "away" },
+      { date: "19 ديسمبر 2025", opponent: "زد", masryScore: 1, opponentScore: 0, venue: "home" },
+      { date: "25 ديسمبر 2025", opponent: "حرس الحدود", masryScore: 1, opponentScore: 0, venue: "away" },
+      { date: "5 يناير 2026", opponent: "سموحة", masryScore: 2, opponentScore: 0, venue: "home" },
+      { date: "10 يناير 2026", opponent: "كهرباء الإسماعيلية", masryScore: 1, opponentScore: 1, venue: "away" },
+      { date: "15 يناير 2026", opponent: "الزمالك", masryScore: 0, opponentScore: 2, venue: "home" },
+    ],
+  },
+  {
+    stage: "ربع النهائي",
+    summary: "تفوق واضح على الجونة ذهابًا وإيابًا",
+    outcome: "4–2 في مجموع المباراتين",
+    matches: [
+      { date: "26 مارس 2026", opponent: "الجونة", masryScore: 2, opponentScore: 0, venue: "away", note: "ذهاب" },
+      { date: "30 مارس 2026", opponent: "الجونة", masryScore: 2, opponentScore: 2, venue: "home", note: "إياب" },
+    ],
+  },
+  {
+    stage: "نصف النهائي",
+    summary: "عودة مثيرة وحسم من نقطة الجزاء",
+    outcome: "6–5 بركلات الترجيح",
+    matches: [
+      { date: "25 مايو 2026", opponent: "زد", masryScore: 0, opponentScore: 1, venue: "away", note: "ذهاب" },
+      { date: "1 يونيو 2026", opponent: "زد", masryScore: 1, opponentScore: 0, venue: "home", note: "إياب · 6–5 ترجيح" },
+    ],
+  },
+  {
+    stage: "النهائي",
+    summary: "ليلة التتويج وعودة البطولات بعد 28 عامًا",
+    outcome: "المصري بطل كأس عاصمة مصر",
+    matches: [
+      { date: "8 يونيو 2026", opponent: "إنبي", masryScore: 3, opponentScore: 0, venue: "away", note: "النهائي" },
+    ],
+  },
+];
+
 export type President = {
   name: string;
   from: string;
@@ -260,6 +318,7 @@ export const IDENTITY: IdentityCard[] = [
 ];
 
 export const SOURCES = [
+  { label: "FilGoal — كأس عاصمة مصر 2025–26", url: "https://www.filgoal.com/championships/1527" },
   { label: "Transfermarkt — El Masry SC", url: "https://www.transfermarkt.com/el-masry-sc/startseite/verein/9094" },
   {
     label: "Transfermarkt — سجل المدربين",

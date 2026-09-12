@@ -14,6 +14,7 @@ import scMohamedBadawy from "@/assets/people/sc-mohamed-badawy.jpg.asset.json";
 import scAhmedGomaa from "@/assets/people/sc-ahmed-gomaa.jpeg.asset.json";
 import scIbrahimElmasry from "@/assets/people/sc-ibrahim-elmasry.jpeg.asset.json";
 import scEno from "@/assets/people/sc-eno.jpeg.asset.json";
+import legendAbdelrahmanFawzi from "@/assets/people/legend-abdelrahman-fawzi.jpg.asset.json";
 
 // مفتاح الاسم كما هو مكتوب في قائمة الرؤساء (history-content.ts)
 export const PRESIDENT_PHOTOS: Record<string, string> = {
@@ -76,7 +77,7 @@ export const LEGENDS: Legend[] = [
     role: "مهاجم",
     era: "الثلاثينيات",
     note: "نجم المصري في ثلاثينيات القرن الماضي، وصاحب أول هدفين لمصر في كأس العالم 1934.",
-    photo: null,
+    photo: legendAbdelrahmanFawzi.url,
   },
   {
     name: "حلمي أبو المعاطي",
