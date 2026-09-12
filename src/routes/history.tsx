@@ -2,10 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Building2,
+  Check,
   Crown,
   ExternalLink,
   History as HistoryIcon,
   Landmark,
+  Medal,
   ShieldCheck,
   Star,
   Target,
@@ -18,7 +20,7 @@ import { SectionHeading } from "@/components/hub/shared";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { COACH_HISTORY, RECORD_PLAYERS } from "@/lib/history-data";
-import { HONOURS, IDENTITY, PRESIDENTS, SOURCES, TIMELINE } from "@/lib/history-content";
+import { HONOURS, IDENTITY, LEAGUE_CUP_PATH, PRESIDENTS, SOURCES, TIMELINE } from "@/lib/history-content";
 import { LEGENDS, PRESIDENT_PHOTOS, TOP_SCORERS } from "@/lib/history-people";
 import { TEAM_CREST } from "@/lib/hub-types";
 
@@ -93,6 +95,7 @@ function HistoryPage() {
             {[
               { v: "story", t: "الحكاية", i: HistoryIcon },
               { v: "honours", t: "البطولات", i: Trophy },
+              { v: "cup-path", t: "مسار الرابطة", i: Medal },
               { v: "coaches", t: "المدربون", i: UserCog },
               { v: "presidents", t: "الرؤساء", i: Crown },
               { v: "scorers", t: "الهدافون", i: Target },
@@ -118,6 +121,10 @@ function HistoryPage() {
 
         <TabsContent value="honours" className="space-y-3">
           <Honours />
+        </TabsContent>
+
+        <TabsContent value="cup-path" className="space-y-3">
+          <LeagueCupPath />
         </TabsContent>
 
         <TabsContent value="coaches" className="space-y-3">
@@ -274,6 +281,122 @@ function Honours() {
         </article>
       ))}
     </>
+  );
+}
+
+function LeagueCupPath() {
+  const matches = LEAGUE_CUP_PATH.flatMap((stage) => stage.matches);
+  const goalsFor = matches.reduce((total, match) => total + match.masryScore, 0);
+  const goalsAgainst = matches.reduce((total, match) => total + match.opponentScore, 0);
+
+  return (
+    <section className="space-y-4">
+      <div className="relative overflow-hidden rounded-2xl border border-gold/40 bg-gradient-to-bl from-gold/20 via-card to-primary/10 p-5">
+        <div className="absolute -left-5 -top-5 size-28 rounded-full border border-gold/15" />
+        <div className="relative flex items-center gap-4">
+          <div className="flex size-16 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-gold/15 text-gold shadow-lg shadow-gold/10">
+            <Trophy className="size-8" strokeWidth={1.7} />
+          </div>
+          <div className="min-w-0">
+            <Badge className="border-0 bg-gold/20 text-[10px] font-black text-gold">بطل 2025–26</Badge>
+            <h2 className="mt-2 text-xl font-black">الطريق إلى الكأس</h2>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              رحلة المصري من أول صافرة في المجموعات إلى ليلة الثلاثية والتتويج.
+            </p>
+          </div>
+        </div>
+        <div className="relative mt-5 grid grid-cols-3 divide-x divide-x-reverse divide-border/70 rounded-xl border border-border/60 bg-background/35 py-3 text-center">
+          <div>
+            <p className="text-lg font-black text-gold">{matches.length}</p>
+            <p className="text-[10px] text-muted-foreground">مباراة</p>
+          </div>
+          <div>
+            <p className="text-lg font-black text-primary">{goalsFor}</p>
+            <p className="text-[10px] text-muted-foreground">هدف للمصري</p>
+          </div>
+          <div>
+            <p className="text-lg font-black">{goalsAgainst}</p>
+            <p className="text-[10px] text-muted-foreground">هدف عليه</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative pr-5">
+        <div className="absolute bottom-5 right-[7px] top-5 w-px bg-gradient-to-b from-primary via-primary/60 to-gold" />
+        <div className="space-y-4">
+          {LEAGUE_CUP_PATH.map((stage, stageIndex) => (
+            <article
+              key={stage.stage}
+              className={`relative overflow-hidden rounded-2xl border bg-card ${
+                stageIndex === LEAGUE_CUP_PATH.length - 1 ? "border-gold/50" : "border-border/70"
+              }`}
+            >
+              <span
+                className={`absolute -right-[22px] top-6 z-10 flex size-4 items-center justify-center rounded-full ring-4 ring-background ${
+                  stageIndex === LEAGUE_CUP_PATH.length - 1 ? "bg-gold text-gold-foreground" : "bg-primary text-primary-foreground"
+                }`}
+              >
+                <Check className="size-2.5" strokeWidth={4} />
+              </span>
+              <header className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-bold text-primary">المحطة {stageIndex + 1}</p>
+                    <h3 className="text-base font-black">{stage.stage}</h3>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">{stage.summary}</p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={`shrink-0 text-[9px] font-black ${
+                      stageIndex === LEAGUE_CUP_PATH.length - 1
+                        ? "border-gold/50 bg-gold/10 text-gold"
+                        : "border-primary/30 text-primary"
+                    }`}
+                  >
+                    {stage.outcome}
+                  </Badge>
+                </div>
+              </header>
+              <div className="divide-y divide-border/50">
+                {stage.matches.map((match) => {
+                  const won = match.masryScore > match.opponentScore;
+                  const drawn = match.masryScore === match.opponentScore;
+                  return (
+                    <div key={`${stage.stage}-${match.date}-${match.opponent}`} className="grid grid-cols-[1fr_auto] items-center gap-3 px-4 py-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className={`size-1.5 shrink-0 rounded-full ${won ? "bg-primary" : drawn ? "bg-gold" : "bg-muted-foreground"}`} />
+                          <p className="truncate text-sm font-bold">
+                            المصري <span className="px-1 text-muted-foreground">×</span> {match.opponent}
+                          </p>
+                        </div>
+                        <p className="mt-1 pr-3.5 text-[10px] text-muted-foreground">
+                          {match.date}
+                          {match.note ? ` · ${match.note}` : ""}
+                        </p>
+                      </div>
+                      <div className={`min-w-16 rounded-lg px-2 py-1.5 text-center ${won ? "bg-primary/15 text-primary" : drawn ? "bg-gold/15 text-gold" : "bg-secondary text-muted-foreground"}`}>
+                        <span className="text-lg font-black tabular-nums">{match.masryScore} — {match.opponentScore}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <a
+        href="https://www.filgoal.com/championships/1527"
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center justify-center gap-2 rounded-xl border border-border/70 bg-secondary/40 px-4 py-3 text-xs font-bold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+      >
+        المصدر: FilGoal — كأس عاصمة مصر
+        <ExternalLink className="size-3.5" />
+      </a>
+    </section>
   );
 }
 
