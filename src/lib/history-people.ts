@@ -92,7 +92,7 @@ export const LEGENDS: Legend[] = [
     role: "لاعب وسط",
     era: "السبعينيات",
     note: "ابن بورسعيد الذي بدأ مسيرته في المصري قبل أن يصبح من أبرز أسماء الكرة المصرية لاعبًا ومدربًا.",
-    photo: null,
+    photo: legendMohsenSaleh.url,
   },
   {
     name: "إبراهيم المصري «مارادونا بورسعيد»",
